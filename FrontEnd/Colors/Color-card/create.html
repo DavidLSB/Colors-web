@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Colors</title>
+    <style>
+        .Navigator {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333333;
+        }
+        .NavigatorOption{
+            float: left;
+            
+        }
+        .NavigatorOption a{
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        .Information {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
+        .InformationTitle {
+            background-color: #e2e2e2
+        }
+        .InformationItem {
+            width: 100%;
+            height: 33,3%;
+        }
+        .InformationItem a{
+            display: block;
+            color: black;
+        }
+
+    </style>
+</head>
+
+<nav>
+    <div>
+        <ul class="Navigator">
+            <li class="NavigatorOption">
+                <a href="/values" class="Button website navigator">Values</a>
+            </li>
+            <li class="NavigatorOption">
+                <a href="/colors-without-values" class="Button website navigator">Colors without values</a>
+            </li>
+            <li class="NavigatorOption">
+                <a href="/colors" class="Button website navigator">Colors</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<body>
+    <div>
+        <div>
+            <div>
+                <div>
+                    <div>
+                        <h1>New Color</h2>
+                       <!-- <form onsubmit="create_character(event)"> -->
+                            <div>
+                                <label>Name</label>
+                                <input type="text" placeholder=""
+                                    required>
+                            </div>
+                            <label>Color Temperature:</label>
+                            <div>
+                                <input type="radio">
+                                <label>
+                                    Cool Color
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio">
+                                <label>
+                                    Warm Color
+                                </label>
+                            </div>
+                            <!--Make complementary colors, analogous colors (pointers to other color cards/or links that open pages), Colors than can create that color,and RGB values-->
+                            <button>Create</button>
+                       <!-- </form>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

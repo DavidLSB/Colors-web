@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Colors</title>
+    <style>
+        .Navigator {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333333;
+        }
+        .NavigatorOption{
+            float: left;
+            
+        }
+        .NavigatorOption a{
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        .Information {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
+        .InformationTitle {
+            background-color: #e2e2e2
+        }
+        .InformationItem {
+            width: 100%;
+            height: 33,3%;
+        }
+        .InformationItem a{
+            display: block;
+            color: black;
+        }
+        
+    </style>
+</head>
+
+<nav>
+    <div>
+        <ul class="Navigator">
+            <li class="NavigatorOption">
+                <a href="/values" class="Button website navigator">Values</a>
+            </li>
+            <li class="NavigatorOption">
+                <a href="/colors-without-values" class="Button website navigator">Colors without values</a>
+            </li>
+            <li class="NavigatorOption">
+                <a href="/colors" class="Button website navigator">Colors</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<body>
+    <div>
+        <div>
+            <div>
+                <h1>Colors</h1>
+                <a href="/new-color" class="Button new color">New color</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row g-4" id="colors">
+        </div>
+    </div>
+   
+</body>
+<footer>
+    <p>Created by: DavidLSB</p>
+</footer>
+</html>

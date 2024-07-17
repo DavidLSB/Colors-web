@@ -40,8 +40,25 @@
             display: block;
             color: black;
         }
-
     </style>
+    <script>
+    function validateColorForm() {
+    	var input1 = document.forms["Color-form"]["red"]
+    	var input2 = document.forms["Color-form"]["green"]
+    	var input3 = document.forms["Color-form"]["blue"]
+    	
+    	if (input1.value == "") {
+    		input1.value = input1.placeholder
+    	}
+    	if (input2.value == "") {
+    		input2.value = input2.placeholder
+    	}
+    	if (input3.value == "") {
+    		input3.value = input3.placeholder
+    	}
+    	return true
+    }
+    </script>
 </head>
 
 <nav>
@@ -66,23 +83,46 @@
                 <div>
                     <div>
                         <h1>New Color</h2>
-                       <!-- <form onsubmit="create_character(event)"> -->
+                        <form id="Color-form" name="Color-form" action="/submit" onsubmit="return validateColorForm()" method="POST">
                             <div>
                                 <label>Name</label>
-                                <input type="text" required>
+                                <input type="text" id="name" name="name" required>
                             </div>
                             <label>Color Temperature:</label>
                             <div>
-                                <input type="radio">
+                                <input type="radio" id="color_temperature" name="color_temperature" value="1" required>
                                 <label>Cool Color</label>
                             </div>
                             <div>
-                                <input type="radio">
+                                <input type="radio" id="color_temperature" name="color_temperature" value="2" required>
                                 <label>Warm Color</label>
                             </div>
-                            <!--Make complementary colors, analogous colors (pointers to other color cards/or links that open pages), Colors than can create that color,and RGB values-->
-                            <button>Create</button>
-                       <!-- </form>-->
+                             <div>
+                                <label>Complementary Colors</label>
+                                <input type="text" id="complementary_colors" name="complementary_colors">
+                            </div>
+                             <div>
+                                <label>Analogous Colors</label>
+                                <input type="text" id="analogous_colors" name="analogous_colors">
+                            </div>
+                             <div>
+                                <label>Recipee Colors</label>
+                                <input type="text" id="recipee_colors" name="recipee_colors">
+                            </div>
+                            <div>
+                                <label>Red Value</label>
+                                <input type="number" id="red" name="red" min=0 max=255 placeholder=0>
+                            </div>
+                            <div>
+                                <label>Green Value</label>
+                                <input type="number" id="green" name="green" min=0 max=255 placeholder=0>
+                            </div>
+                            <div>
+                                <label>Blue Value</label>
+                                <input type="number" id="blue" name="blue" min=0 max=255 placeholder=0>
+                            </div>
+                            <button type="submit">Create</button>
+                        </form>
                     </div>
                 </div>
             </div>

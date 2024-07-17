@@ -14,7 +14,6 @@
         }
         .NavigatorOption{
             float: left;
-            
         }
         .NavigatorOption a{
             display: block;
@@ -40,7 +39,23 @@
             display: block;
             color: black;
         }
-        
+        .Color-Container {
+        	list-style-type: none;
+            	margin: 0;
+            	padding: 0;
+            	overflow: hidden;
+        }
+        .Color-Container li{
+        	float: left;
+        	margin: 10px;
+        }
+        {% for row in values_list %}
+        	#Color-{{row[0]}} {
+        		width: 100px;
+        		height: 100px;
+        		background-color: rgb({{row[1]}}, {{row[2]}}, {{row[3]}})
+        	}
+        {% endfor %}
     </style>
 </head>
 
@@ -64,6 +79,14 @@
         <div>
             <div>
                 <h1>Colors</h1>
+                <ul class="Color-Container">
+                	{% for row in colors_list %}
+                	<li class="Color-Card">
+                		<div id="Color-{{row[0]}}"></div>
+                		<a href="/edit/{{row[0]}}" class="Button edit color">{{row[1]}}</a>
+                	</li>
+                {% endfor %}
+                </ul>
                 <a href="/new-color" class="Button new color">New color</a>
             </div>
         </div>

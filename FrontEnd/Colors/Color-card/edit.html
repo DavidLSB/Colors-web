@@ -46,10 +46,15 @@
     function validateColorForm() {
     	for (let input=0; input < document.forms["Color-form"].length;input++) {
     		if (document.forms["Color-form"][input].value == "") {
-    			document.forms["Color-form"][input].value = document.forms["Color-form"][input].placeholder
+    			if (document.forms["Color-form"][input].placeholder != null) {
+    				document.forms["Color-form"][input].value = document.forms["Color-form"][input].placeholder
+    			}
     		}
     	}
     	return true
+    }
+    function colorFormMethodPut() {
+    	document.forms["Color-form"].setAttribute("method", "PUT")
     }
     </script>
 </head>
@@ -76,7 +81,7 @@
                 <div>
                     <div>
                         <h1>New Color</h2>
-                        <form id="Color-form" action="/edit/{{color_atributes[0][0]}}" onsubmit="return validateColorForm()" method="POST">
+                        <form id="Color-form" action="/edit/{{color_atributes[0][0]}}" onsubmit="validateColorForm(); colorFormMethodPut();" method="GET">
                             <div>
                                 <label>Name</label>
                                 <input type="text" id="name" name="name" placeholder={{color_atributes[0][1]}}>
@@ -92,15 +97,15 @@
                             </div>
                              <div>
                                 <label>Complementary Colors</label>
-                                <input type="text" id="complementary_colors" placeholder={{color_atributes[0][3]}} name="complementary_colors">
+                                <input type="text" id="complementary_colors" placeholder="{{color_atributes[0][3]}}" name="complementary_colors">
                             </div>
                              <div>
                                 <label>Analogous Colors</label>
-                                <input type="text" id="analogous_colors" placeholder={{color_atributes[0][4]}} name="analogous_colors">
+                                <input type="text" id="analogous_colors" placeholder="{{color_atributes[0][4]}}" name="analogous_colors">
                             </div>
                              <div>
                                 <label>Recipee Colors</label>
-                                <input type="text" id="recipee_colors" placeholder={{color_atributes[0][5]}} name="recipee_colors">
+                                <input type="text" id="recipee_colors" placeholder="{{color_atributes[0][5]}}" name="recipee_colors">
                             </div>
                             <div>
                                 <label>Red Value</label>
@@ -114,6 +119,7 @@
                                 <label>Blue Value</label>
                                 <input type="number" id="blue" name="blue" min=0 max=255 placeholder={{color_values[0][3]}}>
                             </div>
+                            <input type="hidden" id="_method" name="_method" value="PUT">
                             <button type="submit">Edit</button>
                         </form>
                         <form action="/delete/{{color_atributes[0][0]}}" method="POST">

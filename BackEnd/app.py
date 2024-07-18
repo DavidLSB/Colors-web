@@ -29,7 +29,7 @@ class Color(db.Model):
 		self.color_temperature = color_temperature
 		self.complementary_colors = complementary_colors
 		self.analogous_colors = analogous_colors
-		self.recipee_colores = recipee_colors
+		self.recipee_colors = recipee_colors
 
 class RGBValues(db.Model):
 	__tablename__ = 'rgb_values'
@@ -63,7 +63,6 @@ def newcolortest():
 
 @app.route('/submit', methods = ['GET', 'POST'])
 def submit():
-	
 	if request.method == 'POST':
 		name = request.form['name']
 		color_temperature = request.form['color_temperature']
@@ -73,7 +72,6 @@ def submit():
 		red = request.form['red']
 		green = request.form['green']
 		blue = request.form['blue']
-		
 		color = Color(name, color_temperature, complementary_colors, analogous_colors, recipee_colors)
 		db.session.add(color)
 		rgbvalues = RGBValues(red, green, blue)
@@ -89,19 +87,20 @@ def submit():
 		cur.close()
 	return render_template('/Colors/main.html', colors_list = colors_list, values_list = values_list) #render_template('success.html', data = name)
 	
-@app.route('/edit/<id>', methods= ['GET','POST'])
+@app.route('/edit/<id>', methods= ['GET','PUT'])
 def edit(id):
-	if request.method == 'POST':
-		name = request.form['name']
-		color_temperature = request.form['color_temperature']
-		complementary_colors = request.form['complementary_colors']
-		analogous_colors = request.form['analogous_colors']
-		recipee_colors = request.form['recipee_colors']
-		red = request.form['red']
-		green = request.form['green']
-		blue = request.form['blue']
+	if (request.method == 'PUT')  or ((request.args.get('_method') != None) and (request.args['_method'] == 'PUT')):
+		name = request.args['name']
+		color_temperature = request.args['color_temperature']
+		complementary_colors = request.args['complementary_colors']
+		analogous_colors = request.args['analogous_colors']
+		recipee_colors = request.args['recipee_colors']
+		red = request.args['red']
+		green = request.args['green']
+		blue = request.args['blue']
 		
 		cur = conn.cursor()
+		
 		cur.execute("""
 			UPDATE colors
 			SET name = %s, color_temperature = %s, complementary_colors = %s, analogous_colors = %s, recipee_colors = %s

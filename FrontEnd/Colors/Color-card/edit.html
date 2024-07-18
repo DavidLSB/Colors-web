@@ -53,9 +53,6 @@
     	}
     	return true
     }
-    function colorFormMethodPut() {
-    	document.forms["Color-form"].setAttribute("method", "PUT")
-    }
     </script>
 </head>
 
@@ -81,7 +78,7 @@
                 <div>
                     <div>
                         <h1>New Color</h2>
-                        <form id="Color-form" action="/edit/{{color_atributes[0][0]}}" onsubmit="validateColorForm(); colorFormMethodPut();" method="GET">
+                        <form id="Color-form" action="/edit/{{color_atributes[0][0]}}" onsubmit="validateColorForm()" method="GET">
                             <div>
                                 <label>Name</label>
                                 <input type="text" id="name" name="name" placeholder={{color_atributes[0][1]}}>
@@ -122,7 +119,8 @@
                             <input type="hidden" id="_method" name="_method" value="PUT">
                             <button type="submit">Edit</button>
                         </form>
-                        <form action="/delete/{{color_atributes[0][0]}}" method="POST">
+                        <form action="/delete/{{color_atributes[0][0]}}" onsubmit="colorFormMethodPut();" method="GET">
+                                <input type="hidden" id="_method" name="_method" value="DELETE">
                         	<button type="submit">Delete</button>
                         </form>
                     </div>

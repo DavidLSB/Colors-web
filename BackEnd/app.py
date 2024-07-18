@@ -77,7 +77,7 @@ def submit():
 		rgbvalues = RGBValues(red, green, blue)
 		db.session.add(rgbvalues)
 		db.session.commit()
-		
+		print(color.id)
 	#if request.method == 'GET':
 		cur = conn.cursor()
 		cur.execute('SELECT * FROM colors')
@@ -123,15 +123,14 @@ def edit(id):
 	cur.close()
 	return render_template('/Colors/Color-card/edit.html', color_atributes = color_atributes, color_values = color_values)
 
-@app.route('/delete/<id>', methods = ['GET', 'POST'])
+@app.route('/delete/<id>', methods = ['GET', 'DELETE'])
 def delete(id):
-	if request.method == 'POST':
-		cur = conn.cursor()
-		cur.execute('DELETE FROM colors WHERE id = %s', id)
-		conn.commit()
-		cur.execute('DELETE FROM rgb_values WHERE id = %s', id)
-		conn.commit()
-		cur.close
+	if (request.method == 'DELETE')  or ((request.args.get('_method') != None) and (request.args['_method'] == 'DELETE')):
+		color_delete = db.session.get(Color, id)
+		rgbvalues_delete = db.session.get(RGBValues, id)
+		db.session.delete(color_delete)
+		db.session.delete(rgbvalues_delete)
+		db.session.commit()
 	cur = conn.cursor()
 	cur.execute('SELECT * FROM colors')
 	colors_list = cur.fetchall()

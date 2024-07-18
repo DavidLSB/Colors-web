@@ -43,18 +43,12 @@
     </style>
     <script>
     function validateColorForm() {
-    	var input1 = document.forms["Color-form"]["red"]
-    	var input2 = document.forms["Color-form"]["green"]
-    	var input3 = document.forms["Color-form"]["blue"]
-    	
-    	if (input1.value == "") {
-    		input1.value = input1.placeholder
-    	}
-    	if (input2.value == "") {
-    		input2.value = input2.placeholder
-    	}
-    	if (input3.value == "") {
-    		input3.value = input3.placeholder
+    	for (let input=0; input < document.forms["Color-form"].length;input++) {
+    		if (document.forms["Color-form"][input].value == "") {
+    			if (document.forms["Color-form"][input].placeholder != null) {
+    				document.forms["Color-form"][input].value = document.forms["Color-form"][input].placeholder
+    			}
+    		}
     	}
     	return true
     }

@@ -47,8 +47,23 @@ class RGBValues(db.Model):
 def home():
 	return render_template('hub.html')
     
-@app.route('/test')
+@app.route('/test', methods = ['GET', 'POST'])
 def test():
+	if request.method == 'POST':
+		print(request.form)
+		name = "Unknown"
+		color_temperature = "3"
+		complementary_colors = ""
+		analogous_colors = ""
+		recipee_colors = ""
+		red = request.form['current_color_r']
+		green = request.form['current_color_g']
+		blue = request.form['current_color_b']
+		color = Color(name, color_temperature, complementary_colors, analogous_colors, recipee_colors)
+		db.session.add(color)
+		rgbvalues = RGBValues(red, green, blue)
+		db.session.add(rgbvalues)
+		db.session.commit()
 	cur = conn.cursor()
 	cur.execute('SELECT * FROM colors')
 	colors_list = cur.fetchall()
@@ -77,7 +92,6 @@ def submit():
 		rgbvalues = RGBValues(red, green, blue)
 		db.session.add(rgbvalues)
 		db.session.commit()
-		print(color.id)
 	#if request.method == 'GET':
 		cur = conn.cursor()
 		cur.execute('SELECT * FROM colors')

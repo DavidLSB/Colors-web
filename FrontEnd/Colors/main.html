@@ -29,7 +29,7 @@
             background-color: #f1f1f1;
         }
         .InformationTitle {
-            background-color: #e2e2e2
+            background-color: #e2e2e2;
         }
         .InformationItem {
             width: 100%;
@@ -49,14 +49,95 @@
         	float: left;
         	margin: 10px;
         }
+        #Color-Mixer {
+        		width: 400px;
+        		height: 400px;
+        		background-color: rgb(255, 255, 255);
+        }
+        #Color-Mixer-Input {
+        		width: 400px;
+        		height: 400px;
+        		opacity: 0;
+        }
         {% for row in values_list %}
         	#Color-{{row[0]}} {
         		width: 100px;
         		height: 100px;
-        		background-color: rgb({{row[1]}}, {{row[2]}}, {{row[3]}})
+        		background-color: rgb({{row[1]}}, {{row[2]}}, {{row[3]}});
         	}
         {% endfor %}
     </style>
+    <script>
+    	let MAXEXPECTEDCOLORSDIGITS = 4
+    	document.addEventListener('DOMContentLoaded', function () {
+    		let input = document.getElementById("Color-Mixer-Input")
+    		let colorMixer = document.getElementById("Color-Mixer")
+    		let firstIdPlaceholder = document.getElementById("First-ID")
+    		input.addEventListener('input', function (event) {
+    			event.preventDefault()
+    			if (input.value.length < MAXEXPECTEDCOLORSDIGITS) {
+    				input.value = ""
+    			}
+    			else {
+    				if (firstIdPlaceholder.value == "") {
+    					let splittedUrl = input.value.split("/")
+    					let id = splittedUrl[splittedUrl.length - 1]
+    					let chosedColor = document.getElementById("Color-"+id)
+    					let selectedColorBackgroundColor = window.getComputedStyle(chosedColor,null).getPropertyValue("background-color")
+    					firstIdPlaceholder.value = id
+    					input.value = ""
+    					colorMixer.style.backgroundColor = selectedColorBackgroundColor
+    				}
+    				else {
+    					let splittedUrl = input.value.split("/")
+    					let id = splittedUrl[splittedUrl.length - 1]
+    					let originalRGB = window.getComputedStyle(colorMixer,null).getPropertyValue("background-color")
+    					let originalR = originalRGB.replace(/[^0-9 ]/g,"").split(" ")[0]
+    					let originalG = originalRGB.replace(/[^0-9 ]/g,"").split(" ")[1]
+    					let originalB = originalRGB.replace(/[^0-9 ]/g,"").split(" ")[2]
+    					let chosedColor = document.getElementById("Color-"+id)
+    					let selectedColorBackgroundColor = window.getComputedStyle(chosedColor,null).getPropertyValue("background-color")
+    					let addedR = selectedColorBackgroundColor.replace(/[^0-9 ]/g,"").split(" ")[0]
+    					let addedG = selectedColorBackgroundColor.replace(/[^0-9 ]/g,"").split(" ")[1]
+    					let addedB = selectedColorBackgroundColor.replace(/[^0-9 ]/g,"").split(" ")[2]
+    					let currentColorR = document.getElementById("current_color_r")
+    					let currentColorG = document.getElementById("current_color_g")
+    					let currentColorB = document.getElementById("current_color_b")
+    					let rDivisor = 0.5 + (1.5*((255-Math.max(originalR*1,addedR*1))/255))
+    					let gDivisor = 0.5 + (1.5*((255-Math.max(originalG*1,addedG*1))/255))
+    					let bDivisor = 0.5 + (1.5*((255-Math.max(originalB*1,addedB*1))/255))
+    					var newR = 1
+    					var newG = 1
+    					var newB = 1
+    					if (((addedR*1) == (addedG*1)) && ((addedG*1) == (addedB*1))) {
+    						newR = (originalR*1)*(0.5 + 1.5*((addedR*1)/255))
+    						newG = (originalG*1)*(0.5 + 1.5*((addedG*1)/255))
+    						newB = (originalB*1)*(0.5 + 1.5*((addedB*1)/255))
+    					}
+    					else {
+    						newR = ((originalR*1 + addedR*1)/(rDivisor*1))
+    						newG = ((originalG*1 + addedG*1)/(gDivisor*1))
+    						newB = ((originalB*1 + addedB*1)/(bDivisor*1))
+    					}
+    					colorMixer.style.backgroundColor = "rgb("+newR.toString()+", "+newG.toString()+", "+newB.toString()+")"
+    					let roundedRGB = window.getComputedStyle(colorMixer,null).getPropertyValue("background-color")
+    					let roundedR = roundedRGB.replace(/[^0-9 ]/g,"").split(" ")[0]
+    					let roundedG = roundedRGB.replace(/[^0-9 ]/g,"").split(" ")[1]
+    					let roundedB = roundedRGB.replace(/[^0-9 ]/g,"").split(" ")[2]
+    					currentColorR.value = roundedR*1
+    					currentColorG.value = roundedG*1
+    					currentColorB.value = roundedB*1
+    					input.value = id
+    				}
+    			}
+    		})
+    	})
+    	function resetColorMixer() {
+    		document.getElementById("First-ID").value = ""
+    		document.getElementById("Color-Mixer-Input").value = ""
+    		document.getElementById("Color-Mixer").style.backgroundColor = "white"
+    	}
+    </script>
 </head>
 
 <nav>
@@ -78,9 +159,20 @@
     <div>
         <div>
             <div>
+            	<div id="Color-Mixer">
+         	   	<form id="Color-Mixer-Form" autocomplete="off" method="POST">
+         	   		<input type="hidden" id="current_color_r" name="current_color_r" value="">
+          	  		<input type="hidden" id="current_color_g" name="current_color_g" value="">
+          	  		<input type="hidden" id="current_color_b" name="current_color_b" value="">
+          	  		<input type="hidden" id="First-ID" name="First-ID" value="">
+            			<input type="text" id="Color-Mixer-Input" name="Second-ID" value="" required>
+            		</form>
+            	</div>
+            	<button type="submit" form="Color-Mixer-Form" action="/test" method="Post">Save</button>
+            	<button type="button" onclick="resetColorMixer()">Restart</button>
                 <h1>Colors</h1>
                 <ul class="Color-Container">
-                	{% for row in colors_list %}
+                {% for row in colors_list %}
                 	<li class="Color-Card">
                 		<div id="Color-{{row[0]}}"></div>
                 		<a href="/edit/{{row[0]}}" class="Button edit color">{{row[1]}}</a>

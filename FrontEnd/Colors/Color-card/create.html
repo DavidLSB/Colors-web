@@ -4,43 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Colors</title>
-    <style>
-        .Navigator {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333333;
-        }
-        .NavigatorOption{
-            float: left;
-            
-        }
-        .NavigatorOption a{
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 10px;
-        }
-        .Information {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #f1f1f1;
-        }
-        .InformationTitle {
-            background-color: #e2e2e2
-        }
-        .InformationItem {
-            width: 100%;
-            height: 33,3%;
-        }
-        .InformationItem a{
-            display: block;
-            color: black;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
     function validateColorForm() {
     	for (let input=0; input < document.forms["Color-form"].length;input++) {
@@ -55,71 +20,69 @@
     </script>
 </head>
 
-<nav>
-    <div>
-        <ul class="Navigator">
-            <li class="NavigatorOption">
-                <a href="/values" class="Button website navigator">Values</a>
-            </li>
-            <li class="NavigatorOption">
-                <a href="/colors-without-values" class="Button website navigator">Colors without values</a>
-            </li>
-            <li class="NavigatorOption">
-                <a href="/colors" class="Button website navigator">Colors</a>
+<nav class="p-1 text-bg-dark">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li>
+                <a href="/test" class="navbar-brand">Colors</a>
             </li>
         </ul>
+        <div class="text-end">
+            <a href="/" class="btn btn-outline-light me-2">Home</a>
+        </div>
     </div>
 </nav>
 <body>
-	<div>
-		<h1>New Color</h2>
-                <form id="Color-form" name="Color-form" action="/submit" onsubmit="return validateColorForm()" method="POST">
-                	<div>
-                        	<label>Name</label>
-                        	<input type="text" id="name" name="name" required>
-                        </div>
-                        <label>Color Temperature:</label>
-                        <div>
-                        	<input type="radio" id="color_temperature" name="color_temperature" value="1" required>
-                                <label>Cool Color</label>
-                        </div>
-                        <div>
-                                <input type="radio" id="color_temperature" name="color_temperature" value="2" required>
-                                <label>Warm Color</label>
-                        </div>
-                        <div>
-                                <input type="radio" id="color_temperature" name="color_temperature" value="3" required>
-                                <label>Neutral Color</label>
-                        </div>
-                        <div>
-                                <label>Complementary Colors</label>
-                                <input type="text" id="complementary_colors" name="complementary_colors">
-                        </div>
-                        <div>
-                                <label>Analogous Colors</label>
-                                <input type="text" id="analogous_colors" name="analogous_colors">
-                        </div>
-                        <div>
-                                <label>Recipee Colors</label>
-                                <input type="text" id="recipee_colors" name="recipee_colors">
-                        </div>
-                        <div>
-                                <label>Red Value</label>
-                                <input type="number" id="red" name="red" min=0 max=255 placeholder=0>
-                        </div>
-                        <div>
-                                <label>Green Value</label>
-                                <input type="number" id="green" name="green" min=0 max=255 placeholder=0>
-                        </div>
-                        <div>
-                                <label>Blue Value</label>
-                                <input type="number" id="blue" name="blue" min=0 max=255 placeholder=0>
-                        </div>
-                        <button type="submit">Create</button>
-                </form>
+	<div class="p-1 p-md-1 mb-1 rounded text-body-emphasis bg-body-secondary">      
+        <h5 class="fst-italic">New Color</h5>
+    </div>
+    <form id="Color-form" name="Color-form" action="/submit" onsubmit="return validateColorForm()" method="POST">
+        <div>
+        	<label>Name</label>
+           	<input type="text" id="name" name="name" required>
         </div>
+        <label>Color Temperature:</label>
+        <div>
+           	<input class="form-check-input mt-0" type="radio" id="color_temperature" name="color_temperature" value="1" required>
+            <label>Cool Color</label>
+        </div>
+        <div>
+            <input class="form-check-input mt-0" type="radio" id="color_temperature" name="color_temperature" value="2" required>
+            <label>Warm Color</label>
+        </div>
+        <div>
+            <input class="form-check-input mt-0" type="radio" id="color_temperature" name="color_temperature" value="3" required>
+            <label>Neutral Color</label>
+        </div>
+        <div>
+            <label>Complementary Colors</label>
+            <input type="text" id="complementary_colors" name="complementary_colors">
+        </div>
+        <div>
+            <label>Analogous Colors</label>
+            <input type="text" id="analogous_colors" name="analogous_colors">
+        </div>
+        <div>
+            <label>Recipee Colors</label>
+            <input type="text" id="recipee_colors" name="recipee_colors">
+        </div>
+        <div>
+            <label>Red Value</label>
+            <input type="number" id="red" name="red" min=0 max=255 placeholder=0>
+        </div>
+        <div>
+            <label>Green Value</label>
+            <input type="number" id="green" name="green" min=0 max=255 placeholder=0>
+        </div>
+        <div>
+            <label>Blue Value</label>
+            <input type="number" id="blue" name="blue" min=0 max=255 placeholder=0>
+        </div>
+        <button type="submit" class="btn btn-success px-3">Create</button>
+    </form>
 </body>
-<footer>
-    <p>Created by: DavidLSB</p>
+<footer class="py-3 my-4">
+    <div class="nav justify-content-center border-bottom pb-3 mb-3"></div>
+    <p class="text-center text-body-secondary">Created by: DavidLSB</p>
 </footer>
 </html>

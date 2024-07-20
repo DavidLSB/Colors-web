@@ -4,41 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Colors</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
-        .Navigator {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333333;
-        }
-        .NavigatorOption{
-            float: left;
-        }
-        .NavigatorOption a{
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 10px;
-        }
-        .Information {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #f1f1f1;
-        }
-        .InformationTitle {
-            background-color: #e2e2e2;
-        }
-        .InformationItem {
-            width: 100%;
-            height: 33,3%;
-        }
-        .InformationItem a{
-            display: block;
-            color: black;
-        }
         .Color-Container {
         	list-style-type: none;
             	margin: 0;
@@ -140,47 +108,47 @@
     </script>
 </head>
 
-<nav>
-    <div>
-        <ul class="Navigator">
-            <li class="NavigatorOption">
-                <a href="/values" class="Button website navigator">Values</a>
-            </li>
-            <li class="NavigatorOption">
-                <a href="/colors-without-values" class="Button website navigator">Colors without values</a>
-            </li>
-            <li class="NavigatorOption">
-                <a href="/colors" class="Button website navigator">Colors</a>
+<nav class="p-1 text-bg-dark">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li>
+                <a href="/test" class="navbar-brand">Colors</a>
             </li>
         </ul>
+        <div class="text-end">
+            <a href="/" class="btn btn-outline-light me-2">Home</a>
+        </div>
     </div>
 </nav>
 <body>
 	<div>
-	     	<div id="Color-Mixer">
+	     	<div id="Color-Mixer" class="dropdown-menu position-static d-grid gap-1 p-1  rounded-3 mx-0 border-4 shadow w-220px">
  	   		<form id="Color-Mixer-Form" autocomplete="off" method="POST">
 				<input type="hidden" id="current_color_r" name="current_color_r" value="">
           		  	<input type="hidden" id="current_color_g" name="current_color_g" value="">
           		  	<input type="hidden" id="current_color_b" name="current_color_b" value="">
           		  	<input type="hidden" id="First-ID" name="First-ID" value="">
-            			<input type="text" id="Color-Mixer-Input" name="Second-ID" value="" required>
+            		<input type="text" id="Color-Mixer-Input" name="Second-ID" value="" required>
             		</form>
             	</div>
-            	<button type="submit" form="Color-Mixer-Form" action="/test" method="Post">Save</button>
-            	<button type="button" onclick="resetColorMixer()">Restart</button>
+            	<button type="submit" class="btn btn-success px-3" form="Color-Mixer-Form" action="/test" method="Post">Save</button>
+            	<button type="button" class="btn btn-danger px-3" onclick="resetColorMixer()">Restart</button>
                 <h1>Colors</h1>
                 <ul class="Color-Container">
                 {% for row in colors_list %}
-                	<li class="Color-Card">
-                		<div id="Color-{{row[0]}}"></div>
-                		<a href="/edit/{{row[0]}}" class="Button edit color">{{row[1]}}</a>
+                	<li class="card shadow-sm">
+                		<a href="/edit/{{row[0]}}" class="btn btn-sm btn-outline-secondary">
+							<div id="Color-{{row[0]}}"></div>
+							{{row[1]}}
+						</a>
                 	</li>
                 {% endfor %}
                 </ul>
-                <a href="/new-color" class="Button new color">New color</a>
+                <a href="/new-color" class="btn btn-primary my-2">New color</a>
 	</div>
 </body>
-<footer>
-    <p>Created by: DavidLSB</p>
+<footer class="py-3 my-4">
+    <div class="nav justify-content-center border-bottom pb-3 mb-3"></div>
+    <p class="text-center text-body-secondary">Created by: DavidLSB</p>
 </footer>
 </html>

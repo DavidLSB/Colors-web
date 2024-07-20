@@ -72,7 +72,6 @@ def create_color_and_push(form):
 
 #Creates and pushes a color whose only known parametters are its RGB values (from the color mixer)
 def create_unknown_color(request):
-	print(request)
 	form = request.dict_storage_class([
 		("name", "Unknown"),
 		("color_temperature", "3"),
@@ -86,6 +85,34 @@ def create_unknown_color(request):
 	
 	create_color_and_push(form)
 
+#Given an inmutabledict ("form") and the id of a color, updates it value on the database
+def update_color(form, id):
+	name = form['name']
+	color_temperature = form['color_temperature']
+	complementary_colors = form['complementary_colors']
+	analogous_colors = form['analogous_colors']
+	recipee_colors = form['recipee_colors']
+	red = form['red']
+	green = form['green']
+	blue = form['blue']
+	
+	conn = psycopg2.connect(dbname = DB_NAME, user = DB_USER, password = DB_PASSWORD, host = DB_HOST)
+	cur = conn.cursor()
+	cur.execute("""
+		UPDATE colors
+		SET name = %s, color_temperature = %s, complementary_colors = %s, analogous_colors = %s, recipee_colors = %s
+		WHERE id = %s
+		""", (name, str(color_temperature), complementary_colors, analogous_colors, recipee_colors, str(id)))
+	conn.commit()
+	cur.execute("""
+		UPDATE rgb_values
+		SET red = %s, green = %s, blue = %s
+		WHERE id = %s
+		""", (str(red), str(green), str(blue), str(id)))
+	conn.commit()
+	cur.close()
+	conn.close()
+
 #Returns a list with all colors from the database
 def get_colors_list():
 	conn = psycopg2.connect(dbname = DB_NAME, user = DB_USER, password = DB_PASSWORD, host = DB_HOST)
@@ -94,7 +121,6 @@ def get_colors_list():
 	colors_list = cur.fetchall()
 	cur.close()
 	conn.close()
-	print(colors_list)
 	return colors_list
 
 #Returns a list with all rgb_values from the database
@@ -148,31 +174,7 @@ def submit():
 @app.route('/edit/<id>', methods= ['GET','PUT'])
 def edit(id):
 	if (request.method == 'PUT')  or ((request.args.get('_method') != None) and (request.args['_method'] == 'PUT')):
-		name = request.args['name']
-		color_temperature = request.args['color_temperature']
-		complementary_colors = request.args['complementary_colors']
-		analogous_colors = request.args['analogous_colors']
-		recipee_colors = request.args['recipee_colors']
-		red = request.args['red']
-		green = request.args['green']
-		blue = request.args['blue']
-		
-		conn = psycopg2.connect(dbname = DB_NAME, user = DB_USER, password = DB_PASSWORD, host = DB_HOST)
-		cur = conn.cursor()
-		cur.execute("""
-			UPDATE colors
-			SET name = %s, color_temperature = %s, complementary_colors = %s, analogous_colors = %s, recipee_colors = %s
-			WHERE id = %s
-			""", (name, str(color_temperature), complementary_colors, analogous_colors, recipee_colors, str(id)))
-		conn.commit()
-		cur.execute("""
-			UPDATE rgb_values
-			SET red = %s, green = %s, blue = %s
-			WHERE id = %s
-			""", (str(red), str(green), str(blue), str(id)))
-		conn.commit()
-		cur.close()
-		conn.close()
+		update_color(request.args, id)
 		
 	color_atributes, color_values = get_values_list(id)
 	return render_template('/Colors/Color-card/edit.html', color_atributes = color_atributes, color_values = color_values)

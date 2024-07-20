@@ -92,6 +92,10 @@
                                 <input type="radio" id="color_temperature" name="color_temperature" value="2"{% if color_atributes[0][2] == 2 %} checked {% endif %}>
                                 <label>Warm Color</label>
                             </div>
+                            <div>
+                                <input type="radio" id="color_temperature" name="color_temperature" value="e"{% if color_atributes[0][2] == 3 %} checked {% endif %}>
+                                <label>Neutral Color</label>
+                            </div>
                              <div>
                                 <label>Complementary Colors</label>
                                 <input type="text" id="complementary_colors" placeholder="{{color_atributes[0][3]}}" name="complementary_colors">

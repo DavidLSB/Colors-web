@@ -144,12 +144,8 @@ def get_values_list(id):
 	cur.close()
 	conn.close()
 	return color_attributes, color_values
-		
-@app.route('/')
-def home():
-	return render_template('hub.html')
-    
-@app.route('/test', methods = ['GET', 'POST'])
+		    
+@app.route('/', methods = ['GET', 'POST'])
 def test():
 	if request.method == 'POST':
 		create_unknown_color(request)

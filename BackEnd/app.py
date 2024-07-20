@@ -3,18 +3,20 @@ from flask_sqlalchemy import SQLAlchemy
 import psycopg2
 
 
-MAX_CHARACTERS_STRING = 40
-RELATED_COLORS_MAX_AMOUNT = 5
-DB_HOST = "localhost"
-DB_NAME = "colorsdb"
-DB_USER = "postgres"
-DB_PASSWORD = "password"
+MAX_CHARACTERS_STRING = 40 #The max characters of a string in the database
+RELATED_COLORS_MAX_AMOUNT = 5 #The max number of related colors of max length
+DB_HOST = "localhost" #The database host
+DB_NAME = "colorsdb" #The database name
+DB_USER = "postgres" #The database username
+DB_PASSWORD = "password" #The database password
+TEMPLATE_FOLDER = '../FrontEnd' #The folder where the front-end folders are (the htmls)
 
-app = Flask(__name__, template_folder = '../FrontEnd')
+app = Flask(__name__, template_folder = TEMPLATE_FOLDER)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://'+DB_USER+':'+DB_PASSWORD+'@'+DB_HOST+'/'+DB_NAME
 app.app_context().push()
 db = SQLAlchemy(app)
-conn = psycopg2.connect(dbname = DB_NAME, user = DB_USER, password = DB_PASSWORD, host = DB_HOST)
+
+
 class Color(db.Model):
 	__tablename__ = 'colors'
 	id = db.Column(db.Integer, primary_key=True)
@@ -43,6 +45,80 @@ class RGBValues(db.Model):
 		self.green = green
 		self.blue = blue
 
+#Given a immutabledict object ("form"), creates a color class object, and a rgbvalues class object, and returns them in that order.
+def create_color(form):
+	name = form['name']
+	color_temperature = form['color_temperature']
+	complementary_colors = form['complementary_colors']
+	analogous_colors = form['analogous_colors']
+	recipee_colors = form['recipee_colors']
+	red = form['red']
+	green = form['green']
+	blue = form['blue']
+	color = Color(name, color_temperature, complementary_colors, analogous_colors, recipee_colors)
+	rgbvalues = RGBValues(red, green, blue)
+	return color, rgbvalues
+
+#Given both a color class object and a rgbvalues class object, adds them to the database (POST)
+def push_color(color, rgbvalues):
+	db.session.add(color)
+	db.session.add(rgbvalues)
+	db.session.commit()
+
+#Combination of both create_color and push_color, given an immutabledict object ("form"), creates all the necessary objects to push them the information of the form into the database
+def create_color_and_push(form):
+	color, rgbvalues = create_color(form)
+	push_color(color, rgbvalues)
+
+#Creates and pushes a color whose only known parametters are its RGB values (from the color mixer)
+def create_unknown_color(request):
+	print(request)
+	form = request.dict_storage_class([
+		("name", "Unknown"),
+		("color_temperature", "3"),
+		("complementary_colors", ""),
+		("analogous_colors", ""),
+		("recipee_colors", ""),
+		("red", request.form['current_color_r']),
+		("green", request.form['current_color_g']),
+		("blue", request.form['current_color_b']),
+	])
+	
+	create_color_and_push(form)
+
+#Returns a list with all colors from the database
+def get_colors_list():
+	conn = psycopg2.connect(dbname = DB_NAME, user = DB_USER, password = DB_PASSWORD, host = DB_HOST)
+	cur = conn.cursor()
+	cur.execute('SELECT * FROM colors')
+	colors_list = cur.fetchall()
+	cur.close()
+	conn.close()
+	print(colors_list)
+	return colors_list
+
+#Returns a list with all rgb_values from the database
+def get_rgbvalues_list():
+	conn = psycopg2.connect(dbname = DB_NAME, user = DB_USER, password = DB_PASSWORD, host = DB_HOST)
+	cur = conn.cursor()
+	cur.execute('SELECT * FROM rgb_values')
+	values_list = cur.fetchall()
+	cur.close()
+	conn.close()
+	return values_list
+
+#Given an id, returns a list with a singular color and rgbvalues from the database
+def get_values_list(id):
+	conn = psycopg2.connect(dbname = DB_NAME, user = DB_USER, password = DB_PASSWORD, host = DB_HOST)
+	cur = conn.cursor()
+	cur.execute('SELECT * FROM colors WHERE id='+str(id))
+	color_attributes = cur.fetchall()
+	cur.execute('SELECT * FROM rgb_values WHERE id='+str(id))
+	color_values = cur.fetchall()
+	cur.close()
+	conn.close()
+	return color_attributes, color_values
+		
 @app.route('/')
 def home():
 	return render_template('hub.html')
@@ -50,26 +126,10 @@ def home():
 @app.route('/test', methods = ['GET', 'POST'])
 def test():
 	if request.method == 'POST':
-		print(request.form)
-		name = "Unknown"
-		color_temperature = "3"
-		complementary_colors = ""
-		analogous_colors = ""
-		recipee_colors = ""
-		red = request.form['current_color_r']
-		green = request.form['current_color_g']
-		blue = request.form['current_color_b']
-		color = Color(name, color_temperature, complementary_colors, analogous_colors, recipee_colors)
-		db.session.add(color)
-		rgbvalues = RGBValues(red, green, blue)
-		db.session.add(rgbvalues)
-		db.session.commit()
-	cur = conn.cursor()
-	cur.execute('SELECT * FROM colors')
-	colors_list = cur.fetchall()
-	cur.execute('SELECT * FROM rgb_values')
-	values_list = cur.fetchall()
-	cur.close()
+		create_unknown_color(request)
+		
+	colors_list = get_colors_list()
+	values_list = get_rgbvalues_list()
 	return render_template('/Colors/main.html', colors_list = colors_list, values_list = values_list)
 
 @app.route('/new-color')
@@ -79,27 +139,11 @@ def newcolortest():
 @app.route('/submit', methods = ['GET', 'POST'])
 def submit():
 	if request.method == 'POST':
-		name = request.form['name']
-		color_temperature = request.form['color_temperature']
-		complementary_colors = request.form['complementary_colors']
-		analogous_colors = request.form['analogous_colors']
-		recipee_colors = request.form['recipee_colors']
-		red = request.form['red']
-		green = request.form['green']
-		blue = request.form['blue']
-		color = Color(name, color_temperature, complementary_colors, analogous_colors, recipee_colors)
-		db.session.add(color)
-		rgbvalues = RGBValues(red, green, blue)
-		db.session.add(rgbvalues)
-		db.session.commit()
-	#if request.method == 'GET':
-		cur = conn.cursor()
-		cur.execute('SELECT * FROM colors')
-		colors_list = cur.fetchall()
-		cur.execute('SELECT * FROM rgb_values')
-		values_list = cur.fetchall()
-		cur.close()
-	return render_template('/Colors/main.html', colors_list = colors_list, values_list = values_list) #render_template('success.html', data = name)
+		create_color_and_push(request.form)
+		
+	colors_list = get_colors_list()
+	values_list = get_rgbvalues_list()
+	return render_template('/Colors/main.html', colors_list = colors_list, values_list = values_list)
 	
 @app.route('/edit/<id>', methods= ['GET','PUT'])
 def edit(id):
@@ -113,8 +157,8 @@ def edit(id):
 		green = request.args['green']
 		blue = request.args['blue']
 		
+		conn = psycopg2.connect(dbname = DB_NAME, user = DB_USER, password = DB_PASSWORD, host = DB_HOST)
 		cur = conn.cursor()
-		
 		cur.execute("""
 			UPDATE colors
 			SET name = %s, color_temperature = %s, complementary_colors = %s, analogous_colors = %s, recipee_colors = %s
@@ -128,13 +172,9 @@ def edit(id):
 			""", (str(red), str(green), str(blue), str(id)))
 		conn.commit()
 		cur.close()
+		conn.close()
 		
-	cur = conn.cursor()
-	cur.execute('SELECT * FROM colors WHERE id='+str(id))
-	color_atributes = cur.fetchall()
-	cur.execute('SELECT * FROM rgb_values WHERE id='+str(id))
-	color_values = cur.fetchall()
-	cur.close()
+	color_atributes, color_values = get_values_list(id)
 	return render_template('/Colors/Color-card/edit.html', color_atributes = color_atributes, color_values = color_values)
 
 @app.route('/delete/<id>', methods = ['GET', 'DELETE'])
@@ -145,11 +185,8 @@ def delete(id):
 		db.session.delete(color_delete)
 		db.session.delete(rgbvalues_delete)
 		db.session.commit()
-	cur = conn.cursor()
-	cur.execute('SELECT * FROM colors')
-	colors_list = cur.fetchall()
-	cur.execute('SELECT * FROM rgb_values')
-	values_list = cur.fetchall()
-	cur.close()
+		
+	colors_list = get_colors_list()
+	values_list = get_rgbvalues_list()
 	return render_template('/Colors/main.html', colors_list = colors_list, values_list = values_list)
 	

@@ -72,66 +72,58 @@
     </div>
 </nav>
 <body>
-    <div>
-        <div>
-            <div>
-                <div>
-                    <div>
-                        <h1>New Color</h2>
-                        <form id="Color-form" action="/edit/{{color_atributes[0][0]}}" onsubmit="validateColorForm()" method="GET">
-                            <div>
-                                <label>Name</label>
-                                <input type="text" id="name" name="name" placeholder={{color_atributes[0][1]}}>
-                            </div>
-                            <label>Color Temperature:</label>
-                            <div>
-                                <input type="radio" id="color_temperature" name="color_temperature" value="1" {% if color_atributes[0][2] == 1 %} checked {% endif %}>
-                                <label>Cool Color</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="color_temperature" name="color_temperature" value="2"{% if color_atributes[0][2] == 2 %} checked {% endif %}>
-                                <label>Warm Color</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="color_temperature" name="color_temperature" value="3"{% if color_atributes[0][2] == 3 %} checked {% endif %}>
-                                <label>Neutral Color</label>
-                            </div>
-                             <div>
-                                <label>Complementary Colors</label>
-                                <input type="text" id="complementary_colors" placeholder="{{color_atributes[0][3]}}" name="complementary_colors">
-                            </div>
-                             <div>
-                                <label>Analogous Colors</label>
-                                <input type="text" id="analogous_colors" placeholder="{{color_atributes[0][4]}}" name="analogous_colors">
-                            </div>
-                             <div>
-                                <label>Recipee Colors</label>
-                                <input type="text" id="recipee_colors" placeholder="{{color_atributes[0][5]}}" name="recipee_colors">
-                            </div>
-                            <div>
-                                <label>Red Value</label>
-                                <input type="number" id="red" name="red" min=0 max=255 placeholder={{color_values[0][1]}}>
-                            </div>
-                            <div>
-                                <label>Green Value</label>
-                                <input type="number" id="green" name="green" min=0 max=255 placeholder={{color_values[0][2]}}>
-                            </div>
-                            <div>
-                                <label>Blue Value</label>
-                                <input type="number" id="blue" name="blue" min=0 max=255 placeholder={{color_values[0][3]}}>
-                            </div>
-                            <input type="hidden" id="_method" name="_method" value="PUT">
-                            <button type="submit">Edit</button>
-                        </form>
-                        <form action="/delete/{{color_atributes[0][0]}}" onsubmit="colorFormMethodPut();" method="GET">
-                                <input type="hidden" id="_method" name="_method" value="DELETE">
-                        	<button type="submit">Delete</button>
-                        </form>
-                    </div>
+	<div>
+        <h1>New Color</h2>
+        <form id="Color-form" action="/edit/{{color_atributes[0][0]}}" onsubmit="validateColorForm()" method="GET">
+        	<div>
+                	<label>Name</label>
+                        <input type="text" id="name" name="name" placeholder={{color_atributes[0][1]}}>
                 </div>
-            </div>
-        </div>
-    </div>
+                <label>Color Temperature:</label>
+                <div>
+                	<input type="radio" id="color_temperature" name="color_temperature" value="1" {% if color_atributes[0][2] == 1 %} checked {% endif %}>
+                        <label>Cool Color</label>
+                </div>
+                <div>
+                	<input type="radio" id="color_temperature" name="color_temperature" value="2"{% if color_atributes[0][2] == 2 %} checked {% endif %}>
+                        <label>Warm Color</label>
+                </div>
+                <div>
+                	<input type="radio" id="color_temperature" name="color_temperature" value="3"{% if color_atributes[0][2] == 3 %} checked {% endif %}>
+                        <label>Neutral Color</label>
+                </div>
+                <div>
+                        <label>Complementary Colors</label>
+                        <input type="text" id="complementary_colors" placeholder="{{color_atributes[0][3]}}" name="complementary_colors">
+                </div>
+                <div>
+                        <label>Analogous Colors</label>
+                        <input type="text" id="analogous_colors" placeholder="{{color_atributes[0][4]}}" name="analogous_colors">
+                </div>
+                <div>
+                        <label>Recipee Colors</label>
+                        <input type="text" id="recipee_colors" placeholder="{{color_atributes[0][5]}}" name="recipee_colors">
+                </div>
+                <div>
+                        <label>Red Value</label>
+                        <input type="number" id="red" name="red" min=0 max=255 placeholder={{color_values[0][1]}}>
+                </div>
+                <div>
+                        <label>Green Value</label>
+                        <input type="number" id="green" name="green" min=0 max=255 placeholder={{color_values[0][2]}}>
+                </div>
+                <div>
+                        <label>Blue Value</label>
+                        <input type="number" id="blue" name="blue" min=0 max=255 placeholder={{color_values[0][3]}}>
+                </div>
+                <input type="hidden" id="_method" name="_method" value="PUT">
+                <button type="submit">Edit</button>
+        </form>
+        <form action="/delete/{{color_atributes[0][0]}}" onsubmit="colorFormMethodPut();" method="GET">
+        	<input type="hidden" id="_method" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+        </form>
+	</div>
 </body>
 
 </html>

@@ -36,11 +36,15 @@
         {% endfor %}
     </style>
     <script>
-    	let MAXEXPECTEDCOLORSDIGITS = 4
+    	let MAXEXPECTEDCOLORSDIGITS = 4 // The max amount of digits expected from colors, for example i expect 1000 colors (max), so its 4 digits
+    	
+    	//Starts running when the page loads
     	document.addEventListener('DOMContentLoaded', function () {
     		let input = document.getElementById("Color-Mixer-Input")
     		let colorMixer = document.getElementById("Color-Mixer")
     		let firstIdPlaceholder = document.getElementById("First-ID")
+    		
+    		//When something is added in the input, the function stops the text from being added, and instead changes the color of the color mixer to the mix of both colors (or just the first color if there was no first) 
     		input.addEventListener('input', function (event) {
     			event.preventDefault()
     			if (input.value.length < MAXEXPECTEDCOLORSDIGITS) {
@@ -128,7 +132,7 @@
           		  	<input type="hidden" id="current_color_g" name="current_color_g" value="">
           		  	<input type="hidden" id="current_color_b" name="current_color_b" value="">
           		  	<input type="hidden" id="First-ID" name="First-ID" value="">
-            		<input type="text" id="Color-Mixer-Input" name="Second-ID" value="" required>
+            			<input type="text" id="Color-Mixer-Input" name="Second-ID" value="" required>
             		</form>
             	</div>
             	<button type="submit" class="btn btn-success px-3" form="Color-Mixer-Form" action="/" method="Post">Save</button>

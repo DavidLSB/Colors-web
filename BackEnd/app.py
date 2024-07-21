@@ -82,7 +82,6 @@ def create_unknown_color(request):
 		("green", request.form['current_color_g']),
 		("blue", request.form['current_color_b']),
 	])
-	
 	create_color_and_push(form)
 
 #Given an inmutabledict ("form") and the id of a color, updates it value on the database

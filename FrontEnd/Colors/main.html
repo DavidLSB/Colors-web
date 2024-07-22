@@ -127,7 +127,7 @@
 <body>
 	<div>
 	     	<div id="Color-Mixer" class="dropdown-menu position-static d-grid gap-1 p-1  rounded-3 mx-0 border-4 shadow w-220px">
- 	   		<form id="Color-Mixer-Form" autocomplete="off" method="POST">
+ 	   		<form id="Color-Mixer-Form"  action="/" autocomplete="off" method="POST">
 				<input type="hidden" id="current_color_r" name="current_color_r" value="">
           		  	<input type="hidden" id="current_color_g" name="current_color_g" value="">
           		  	<input type="hidden" id="current_color_b" name="current_color_b" value="">
@@ -135,7 +135,7 @@
             			<input type="text" id="Color-Mixer-Input" name="Second-ID" value="" required>
             		</form>
             	</div>
-            	<button type="submit" class="btn btn-success px-3" form="Color-Mixer-Form" action="/" method="Post">Save</button>
+            	<button type="submit" class="btn btn-success px-3" form="Color-Mixer-Form" method="Post">Save</button>
             	<button type="button" class="btn btn-danger px-3" onclick="resetColorMixer()">Restart</button>
                 <h1>Colors</h1>
                 <ul class="Color-Container">

@@ -9,11 +9,12 @@ If you dont have a db running, you can do it with something like:
 docker run --name colorsdb_docker -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=colorsdb -p 5432:5432 -d postgres
 docker exec -it colorsdb_docker bash
 
-Run:
+Run the container with -p 5000:5000
+Run in the container:
 . venv/bin/activate
 cd BackEnd
 python
 from app import db
 db.create_all()
 exit()
-flask run --debug
+flask run --host=0.0.0.0 --debug
